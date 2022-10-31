@@ -8,7 +8,13 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="rojo">#AE4343</color>
-    <color name="amarillo">#FFEB3B</color>
-    <color name="azul">#8BC34A</color>
-    <color name="verde">#03A9F4</color>
+    <color name="rojoClaro">#FF0000</color>
+    <color name="amarillo">#BCA902</color>
+    <color name="amarilloClaro">#FFE500</color>
+    <color name="verde">#8BC34A</color>
+    <color name="verdeClaro">#89FF00</color>
+    <color name="azul">#017DB5</color>
+    <color name="azulClaro">#00B0FF</color>
+    <color name="transparente">#00FFFFFF</color>
+    <color name="gris">#373232</color>
 </resources>

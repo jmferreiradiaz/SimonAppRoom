@@ -1,18 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:background="@color/gris">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        >
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentoVerde"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.example.simonapp.VerdeFragment"
+            tools:layout="@layout/fragment_verde"
+            android:layout_weight="1"
+            />
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentoRojo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.example.simonapp.RojoFragment"
+            tools:layout="@layout/fragment_rojo"
+            android:layout_weight="1"
+            />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        >
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentoAmarillo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.example.simonapp.AmarilloFragment"
+            tools:layout="@layout/fragment_amarillo"
+            android:layout_weight="1"
+            />
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentoAzul"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.example.simonapp.AzulFragment"
+            tools:layout="@layout/fragment_azul"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.5"
+        android:text="Start"
+        android:textSize="30dp"/>
+
+</LinearLayout>
