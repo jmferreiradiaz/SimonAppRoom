@@ -1,20 +1,22 @@
 package com.example.simonapp
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
-import java.util.concurrent.TimeUnit
-import kotlin.math.log
 
 
 class MainActivity : AppCompatActivity() {
-    private var listaNumeros = arrayListOf<Int>()
+    private var listaNumerosIA = arrayListOf<Int>()
+    private var listaNumerosJugador = arrayListOf<Int>()
+    private var cont = 0;
+    private var derrota = true;
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,23 +26,61 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         val btnStart = findViewById<Button>(R.id.btnStart)
+        //Cuando se pulse el botón Start, el juego comienza
         btnStart.setOnClickListener{turnoIA()}
+
+        val btnAmarillo = findViewById<View>(R.id.btnAmarillo)
+        val btnRojo = findViewById<View>(R.id.btnRojo)
+        val btnVerde = findViewById<View>(R.id.btnVerde)
+        val btnAzul = findViewById<View>(R.id.btnAzul)
+
+            btnAmarillo.setOnClickListener { turnoJugador(btnAmarillo) }
+            btnRojo.setOnClickListener { turnoJugador(btnRojo) }
+            btnVerde.setOnClickListener { turnoJugador(btnVerde) }
+            btnAzul.setOnClickListener { turnoJugador(btnAzul) }
+
+
     }
 
     fun turnoIA(){
+        Log.d("Derrota", ""+derrota)
         val numAle = Random(System.nanoTime()).nextInt(4)
         Log.d("Numero Aleatorio", ""+numAle)
-        listaNumeros.add(numAle)
-        for (i in 0..listaNumeros.size - 1){
-            //Encendemos los colores
-            encenderColores(listaNumeros[i])
-            //Apagar colores
-            apagarColores(listaNumeros[i])
+        listaNumerosIA.add(numAle)
+        GlobalScope.launch {
+            for (i in 0..listaNumerosIA.size - 1){
+                //Encendemos los colores
+                delay(600)
+                encenderColores(listaNumerosIA[i])
+                delay(500)
+                //Apagar colores
+                apagarColores(listaNumerosIA[i])
+            }
         }
+        derrota = false
     }
 
-    fun turnoJugador(){
+    fun turnoJugador(btn:View){
 
+        when(btn.id){
+            R.id.btnRojo -> listaNumerosJugador.add(0);
+            R.id.btnVerde -> listaNumerosJugador.add(1);
+            R.id.btnAmarillo -> listaNumerosJugador.add(2);
+            R.id.btnAzul -> listaNumerosJugador.add(3);
+        }
+
+        if(listaNumerosJugador[cont] == listaNumerosIA[cont]){
+            cont++
+        } else {
+            Log.d("Derrota", "Has perdido")
+            derrota = true
+        }
+
+        if ((listaNumerosJugador.size == listaNumerosIA.size) && !derrota){
+            Log.d("Derrota", "Entra")
+            listaNumerosJugador = arrayListOf<Int>()
+            turnoIA()
+        }
     }
 
     fun encenderColores (numAle: Int){
