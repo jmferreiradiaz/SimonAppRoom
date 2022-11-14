@@ -132,12 +132,12 @@ class MainActivity : AppCompatActivity(), IComunicador {
     /**
      * Cambia el color del botón actual por otro de tono más claro
      */
-    fun encenderColores (numAle: Int){
+    fun encenderColores (num: Int){
         val btnAmarillo = findViewById<View>(R.id.btnAmarillo)
         val btnRojo = findViewById<View>(R.id.btnRojo)
         val btnVerde = findViewById<View>(R.id.btnVerde)
         val btnAzul = findViewById<View>(R.id.btnAzul)
-        when (numAle) {
+        when (num) {
             0 -> btnRojo.backgroundTintList = getColorStateList(R.color.rojoClaro)
             1 -> btnVerde.backgroundTintList = getColorStateList(R.color.verdeClaro)
             2 -> btnAmarillo.backgroundTintList = getColorStateList(R.color.amarilloClaro)
@@ -148,17 +148,21 @@ class MainActivity : AppCompatActivity(), IComunicador {
     /**
      * Cambia el color del botón actual por otro de tono más oscuro
      */
-    fun apagarColores (numAle: Int){
+    fun apagarColores (num: Int){
         val btnAmarillo = findViewById<View>(R.id.btnAmarillo)
         val btnRojo = findViewById<View>(R.id.btnRojo)
         val btnVerde = findViewById<View>(R.id.btnVerde)
         val btnAzul = findViewById<View>(R.id.btnAzul)
-        when (numAle) {
+        when (num) {
             0 -> btnRojo.backgroundTintList = getColorStateList(R.color.rojo)
             1 -> btnVerde.backgroundTintList = getColorStateList(R.color.verde)
             2 -> btnAmarillo.backgroundTintList = getColorStateList(R.color.amarillo)
             3 -> btnAzul.backgroundTintList = getColorStateList(R.color.azul)
         }
+    }
+
+    fun reproducirSonidos(){
+
     }
 
 }
