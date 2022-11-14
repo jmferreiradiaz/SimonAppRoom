@@ -11,11 +11,17 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), IComunicador {
+    //Lista donde guardaremos la secuencia de la máquina
     private var listaNumerosIA = arrayListOf<Int>()
+    //Lista donde guardaremos la secuencia del jugador
     private var listaNumerosJugador = arrayListOf<Int>()
+    //contador que guardar las pulsaciones del jugador en cada turno
     private var cont = 0;
-    private var derrota = true;
+    //Booleano que indica si el jugador ha sido derrotado o no
+    private var derrota = false;
+    //booleano que indica si los botones son clickables para el jugador o no
+    private var isBtnClickable = false;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,25 +34,26 @@ class MainActivity : AppCompatActivity() {
         val btnStart = findViewById<Button>(R.id.btnStart)
         //Cuando se pulse el botón Start, el juego comienza
         btnStart.setOnClickListener{turnoIA()}
-
-        val btnAmarillo = findViewById<View>(R.id.btnAmarillo)
-        val btnRojo = findViewById<View>(R.id.btnRojo)
-        val btnVerde = findViewById<View>(R.id.btnVerde)
-        val btnAzul = findViewById<View>(R.id.btnAzul)
-
-            btnAmarillo.setOnClickListener { turnoJugador(btnAmarillo) }
-            btnRojo.setOnClickListener { turnoJugador(btnRojo) }
-            btnVerde.setOnClickListener { turnoJugador(btnVerde) }
-            btnAzul.setOnClickListener { turnoJugador(btnAzul) }
-
-
     }
 
+    /**
+     * Método que genera la secuencia de la máquina
+     */
     fun turnoIA(){
-        Log.d("Derrota", ""+derrota)
+        //Desactivamos los botones cuando la secuencia empieza
+        isBtnClickable = false
+        //Ponemos derrota a false
+        derrota = false
+        //Reiniciamos el contador
+        cont = 0
+
+        //Generamos un número aleatorio de el 0 al 3
         val numAle = Random(System.nanoTime()).nextInt(4)
-        Log.d("Numero Aleatorio", ""+numAle)
+
+        //Guardamos el número aleatorio en la lista de nuestra secuencia
         listaNumerosIA.add(numAle)
+
+        //Lanzamos la corutina de la iluminación de los botones
         GlobalScope.launch {
             for (i in 0..listaNumerosIA.size - 1){
                 //Encendemos los colores
@@ -56,33 +63,58 @@ class MainActivity : AppCompatActivity() {
                 //Apagar colores
                 apagarColores(listaNumerosIA[i])
             }
+            //Volvemos a activar los botones cuando la secuencia acaba
+            isBtnClickable = true
         }
-        derrota = false
+
     }
 
-    fun turnoJugador(btn:View){
+    /**
+     * Método que se inicia cuando el jugador pulsa una de las 4 vistas.
+     */
+    override fun onPulsarBtnJugador(btn : View){
+        //Variable donde guardaremos el número correspondiente a cada botón
+        var numColor = 0
 
-        when(btn.id){
-            R.id.btnRojo -> listaNumerosJugador.add(0);
-            R.id.btnVerde -> listaNumerosJugador.add(1);
-            R.id.btnAmarillo -> listaNumerosJugador.add(2);
-            R.id.btnAzul -> listaNumerosJugador.add(3);
-        }
+        //Se asignan los números a los botones
+        if (isBtnClickable) {
+            when (btn.id) {
+                R.id.btnRojo -> numColor = 0;
+                R.id.btnVerde -> numColor = 1;
+                R.id.btnAmarillo -> numColor = 2;
+                R.id.btnAzul -> numColor = 3;
+            }
 
-        if(listaNumerosJugador[cont] == listaNumerosIA[cont]){
-            cont++
-        } else {
-            Log.d("Derrota", "Has perdido")
-            derrota = true
-        }
+            //Se añade el número a la lista de la secuencia del jugador
+            listaNumerosJugador.add(numColor)
 
-        if ((listaNumerosJugador.size == listaNumerosIA.size) && !derrota){
-            Log.d("Derrota", "Entra")
-            listaNumerosJugador = arrayListOf<Int>()
-            turnoIA()
+            //Sí la secuencia de la ia es igual a la del jugador sigue el juego
+            if (listaNumerosJugador[cont] == listaNumerosIA[cont]) {
+                cont++
+            }
+            //Si no se acaba el juego y se reinicia
+            else {
+                //Se borran las 2 listas para reiniciar el juego
+                listaNumerosIA.clear()
+                listaNumerosJugador.clear()
+                derrota = true
+                isBtnClickable = false
+            }
+
+            //Si el tamaño de las 2 listas son iguales y derrota está a false
+            if ((listaNumerosJugador.size == listaNumerosIA.size) && !derrota) {
+                //Se borrá la lista del jugador
+                listaNumerosJugador.clear()
+                isBtnClickable = false
+                //Le toca a las IA
+                turnoIA()
+            }
         }
     }
 
+    /**
+     * Cambia el color del botón actual por otro de tono más claro
+     */
     fun encenderColores (numAle: Int){
         val btnAmarillo = findViewById<View>(R.id.btnAmarillo)
         val btnRojo = findViewById<View>(R.id.btnRojo)
@@ -96,6 +128,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Cambia el color del botón actual por otro de tono más oscuro
+     */
     fun apagarColores (numAle: Int){
         val btnAmarillo = findViewById<View>(R.id.btnAmarillo)
         val btnRojo = findViewById<View>(R.id.btnRojo)
@@ -108,4 +143,5 @@ class MainActivity : AppCompatActivity() {
             3 -> btnAzul.backgroundTintList = getColorStateList(R.color.azul)
         }
     }
+
 }
