@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class MainActivity : AppCompatActivity(), IComunicador {
@@ -22,6 +24,8 @@ class MainActivity : AppCompatActivity(), IComunicador {
     private var derrota = false;
     //booleano que indica si los botones son clickables para el jugador o no
     private var isBtnClickable = false;
+    //variable que indica los niveles pasados por el jugador
+    private var nivel = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -88,8 +92,16 @@ class MainActivity : AppCompatActivity(), IComunicador {
             //Se añade el número a la lista de la secuencia del jugador
             listaNumerosJugador.add(numColor)
 
+            GlobalScope.launch {
+                    //Encendemos los colores
+                    encenderColores(numColor)
+                    delay(200)
+                    //Apagar colores
+                    apagarColores(numColor)
+                }
+
             //Sí la secuencia de la ia es igual a la del jugador sigue el juego
-            if (listaNumerosJugador[cont] == listaNumerosIA[cont]) {
+            if (numColor == listaNumerosIA[cont]) {
                 cont++
             }
             //Si no se acaba el juego y se reinicia
@@ -98,6 +110,8 @@ class MainActivity : AppCompatActivity(), IComunicador {
                 listaNumerosIA.clear()
                 listaNumerosJugador.clear()
                 derrota = true
+                nivel = 0;
+                findViewById<TextView>(R.id.lblNivel).text = "Nivel: "+nivel
                 isBtnClickable = false
             }
 
@@ -106,11 +120,14 @@ class MainActivity : AppCompatActivity(), IComunicador {
                 //Se borrá la lista del jugador
                 listaNumerosJugador.clear()
                 isBtnClickable = false
+                nivel++;
+                findViewById<TextView>(R.id.lblNivel).text = "Nivel: "+nivel
                 //Le toca a las IA
                 turnoIA()
             }
         }
     }
+
 
     /**
      * Cambia el color del botón actual por otro de tono más claro

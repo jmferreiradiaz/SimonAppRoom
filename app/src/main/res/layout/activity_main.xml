@@ -8,6 +8,15 @@
     android:orientation="vertical"
     android:background="@color/gris">
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentoEstado"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.simonapp.EstadoFragment"
+        tools:layout="@layout/fragment_estado"
+        android:layout_weight="1.5"
+        />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
