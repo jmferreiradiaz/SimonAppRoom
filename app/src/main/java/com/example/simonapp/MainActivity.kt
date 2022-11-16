@@ -1,5 +1,6 @@
 package com.example.simonapp
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -50,6 +51,11 @@ class MainActivity : AppCompatActivity(), IComunicador {
         derrota = false
         //Reiniciamos el contador
         cont = 0
+        //variables para los sonidos
+        val media1 = MediaPlayer.create(this,R.raw.mi)
+        val media2 = MediaPlayer.create(this,R.raw.mi1)
+        val media3 = MediaPlayer.create(this,R.raw.re)
+        val media4 = MediaPlayer.create(this,R.raw.sol)
 
         //Generamos un número aleatorio de el 0 al 3
         val numAle = Random(System.nanoTime()).nextInt(4)
@@ -61,8 +67,44 @@ class MainActivity : AppCompatActivity(), IComunicador {
         GlobalScope.launch {
             for (i in 0..listaNumerosIA.size - 1){
                 //Encendemos los colores
-                delay(600)
+                delay(500)
                 encenderColores(listaNumerosIA[i])
+                //region Sonidos
+                when(numAle){
+                    1 -> { media1.setVolume(100F,100F)
+                        if(media1.isPlaying){
+                            media1.pause()
+                            media1.seekTo(0)
+                        } else {
+                            media1.start()
+                        }
+                    }
+                    2 -> { media2.setVolume(100F,100F)
+                        if(media2.isPlaying){
+                            media2.pause()
+                            media2.seekTo(0)
+                        } else {
+                            media2.start()
+                        }
+                    }
+                    3 -> { media3.setVolume(100F,100F)
+                        if(media3.isPlaying){
+                            media3.pause()
+                            media3.seekTo(0)
+                        } else {
+                            media3.start()
+                        }
+                    }
+                    4 -> { media4.setVolume(100F,100F)
+                        if(media4.isPlaying){
+                            media4.pause()
+                            media4.seekTo(0)
+                        } else {
+                            media4.start()
+                        }
+                    }
+                }
+                //endregion
                 delay(500)
                 //Apagar colores
                 apagarColores(listaNumerosIA[i])
@@ -88,6 +130,7 @@ class MainActivity : AppCompatActivity(), IComunicador {
                 R.id.btnAmarillo -> numColor = 2;
                 R.id.btnAzul -> numColor = 3;
             }
+
 
             //Se añade el número a la lista de la secuencia del jugador
             listaNumerosJugador.add(numColor)
